@@ -8,7 +8,7 @@ class LareRoundTest < MiniTest::Spec
   end
 
   def create_big_decimal(precision, digit)
-    BigDecimal.new('0.' + '3' * precision + "#{digit}")
+    BigDecimal('0.' + '3' * precision + "#{digit}")
   end
 
   (1..9).each do |digit|
@@ -55,7 +55,7 @@ class LareRoundTest < MiniTest::Spec
         define_method method_name do
           hash = Hash[
             (1..items).map.with_index do |x, i|
-              [x, create_big_decimal(precision, digit) + BigDecimal.new(i)]
+              [x, create_big_decimal(precision, digit) + BigDecimal(i)]
             end
           ]
           rounded_hash = LareRound.round(hash.clone, precision)
@@ -71,7 +71,7 @@ class LareRoundTest < MiniTest::Spec
         TESTMETHOD
         define_method method_name do
           arr = Array.new(items) do
-            BigDecimal.new(-1 * create_big_decimal(precision, digit))
+            BigDecimal(-1 * create_big_decimal(precision, digit))
           end
           rounded_total = arr.reduce(:+).round(precision)
           assert_equal(
@@ -98,7 +98,7 @@ class LareRoundTest < MiniTest::Spec
     end
   end
 
-  let(:default_array) { Array.new(3) { BigDecimal.new('0.1234') } }
+  let(:default_array) { Array.new(3) { BigDecimal('0.1234') } }
 
   def test_should_raise_if_precision_is_nil
     exception = assert_raises(LareRound::LareRoundError) do
